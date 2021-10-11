@@ -2,11 +2,14 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   footer: {
-    height: 100,
+    height: 130,
     padding: 40,
-    backgroundColor: '#bbb',
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'flex-end'
+  },
+  footerText: {
+    color: 'white',
   },
 });
 

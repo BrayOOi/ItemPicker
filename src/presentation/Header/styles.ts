@@ -3,8 +3,7 @@ import COLORS from '../../config/colors';
 
 const styles = StyleSheet.create({
   header: {
-    height: 200,
-    backgroundColor: "#ddd",
+    height: 180,
     padding: 40,
   },
 });
