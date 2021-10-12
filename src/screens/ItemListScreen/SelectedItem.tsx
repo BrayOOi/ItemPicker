@@ -33,14 +33,20 @@ const SelectedItem: React.FC<SelectedItemProps> = ({
   return (
     <View style={styles.selectedItemContainer}>
       {selectedItem && (
-        <View>
+        <View style={styles.selectedItem}>
+          <Text
+            style={[
+              styles.listTitleColor,
+              styles.selectedItemHeading]}>
+              Chosen Item:
+          </Text>
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
-            style={styles.listTitleColor}>
+            style={[styles.selectedItemTitle, styles.listTitleColor]}>
             {selectedItem.title}
           </Text>
-          <Text style={styles.listTitleColor}>{selectedItem.details}</Text>
+          <Text>{selectedItem.details}</Text>
         </View>
       )}
   </View>

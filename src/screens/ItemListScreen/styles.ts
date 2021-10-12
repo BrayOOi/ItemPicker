@@ -63,13 +63,22 @@ const stylesFn = (theme: Palette, isHome: boolean) =>
     },
 
     selectedItemContainer: {
-      height: 200,
+      height: 160,
       backgroundColor: theme.dark,
       width: isHome ? 0 : '48%',
       padding: isHome ? 0 : 20,
     },
+    selectedItem: {
+      alignItems: 'center',
+    },
+    selectedItemHeading: {
+      marginBottom: 20,
+    },
+    selectedItemTitle: {
+      fontSize: 20,
+    },
     lastItemContainer: {
-      marginBottom: 0
+      marginBottom: 0,
     },
   }
 );
