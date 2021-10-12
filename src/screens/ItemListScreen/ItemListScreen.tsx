@@ -1,6 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import Header from '../../presentation/Header';
@@ -8,9 +14,10 @@ import Footer from '../../presentation/Footer';
 import SelectedItem from './SelectedItem';
 import AddItemForm from './AddItemForm';
 
-import { selectItem, deselectItem } from '../../store/items/actions';
+import { loadColorScheme } from '../../store/system/actions';
 
-import styles from './styles';
+import stylesFn from './styles';
+import useTheme from '../../hooks/useTheme';
 
 import { RootState } from '../../store';
 
@@ -18,6 +25,12 @@ const ItemListScreen: React.FC<{}> = () => {
   const items = useSelector((state: RootState) => state.items);
   const { page } = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();
+  const colorScheme = useColorScheme();
+  const theme = useTheme();
+
+  useEffect(() => {
+    dispatch(loadColorScheme(colorScheme));
+  }, [colorScheme]);
 
   // display every item in home screen, only show selected items in 'select' screen
   const isHome = page === 'home';
@@ -32,15 +45,13 @@ const ItemListScreen: React.FC<{}> = () => {
     }
   };
 
+  const styles = stylesFn(theme, isHome);
+
   return (
     <View style={styles.itemListScreen}>
       <Header />
       <View style={styles.contentContainer}>
-        <ScrollView
-          style={{
-            width: isHome ? '100%' : '48%',
-            marginRight: isHome ? 0 : 10,
-          }}>
+        <ScrollView style={styles.listContainer}>
           {items
             .filter(item => isHome || item.isSelected)
             .map(item => (

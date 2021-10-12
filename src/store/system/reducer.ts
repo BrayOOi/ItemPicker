@@ -1,9 +1,11 @@
-import { ItemType } from '../items/types';
-import { SystemActions } from './types';
 import produce from 'immer';
+import { ColorSchemeName } from 'react-native';
+
+import { SystemActions } from './types';
 
 const initialState = {
   page: 'home' as 'home' | 'select',
+  theme: null as ColorSchemeName,
 };
 
 export default function systemReducer(
@@ -23,7 +25,11 @@ export default function systemReducer(
           draft.page = 'home';
         }
       });
+    case 'load/color_scheme':
+      return produce(state, draft => {
+        draft.theme = action.payload || 'light'; // default value
+      });
     default:
-      return initialState;
+      return state;
   }
 }

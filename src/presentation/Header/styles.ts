@@ -1,11 +1,15 @@
 import { StyleSheet } from 'react-native';
-import COLORS from '../../config/colors';
+import { Palette } from '../../config/colors';
 
-const styles = StyleSheet.create({
-  header: {
+const stylesFn = (theme: Palette) => StyleSheet.create({
+  headerContainer: {
     height: 180,
     padding: 40,
   },
+  header: {
+    fontSize: 30,
+    color: theme.light_shadow,
+  },
 });
 
-export default styles;
+export default stylesFn;

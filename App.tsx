@@ -7,7 +7,8 @@ import ItemListScreen from './src/screens/ItemListScreen';
 import { store, persistor } from './src/store';
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
 
   const backgroundStyle = {
     // backgroundColor: isDarkMode ? "#eee" : "#ddd",
@@ -17,10 +18,11 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaView style={backgroundStyle}>
-          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-          <ItemListScreen />
-        </SafeAreaView>
+          <SafeAreaView style={backgroundStyle}>
+            <StatusBar
+              barStyle={!isDarkMode ? 'light-content' : 'dark-content'} />
+            <ItemListScreen />
+          </SafeAreaView>
       </PersistGate>
     </Provider>
   );

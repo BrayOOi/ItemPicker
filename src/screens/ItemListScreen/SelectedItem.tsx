@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import styles from './styles';
+import stylesFn from './styles';
 
 import { ItemType } from '../../store/items/types';
 import { RootState } from '../../store';
+import useTheme from '../../hooks/useTheme';
 
 interface SelectedItemProps {
   isShow: boolean;
@@ -26,21 +27,20 @@ const SelectedItem: React.FC<SelectedItemProps> = ({
     }
   }, [page]);
 
+  const theme = useTheme();
+  const styles = stylesFn(theme, !isShow);
+
   return (
-    <View
-      style={[
-        styles.selectedItemContainer,
-        {
-          width: isShow ? '48%' : 0,
-          padding: isShow ? 20 : 0,
-        }
-      ]}>
+    <View style={styles.selectedItemContainer}>
       {selectedItem && (
         <View>
-          <Text ellipsizeMode="tail" numberOfLines={1}>
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={styles.listTitleColor}>
             {selectedItem.title}
           </Text>
-          <Text>{selectedItem.details}</Text>
+          <Text style={styles.listTitleColor}>{selectedItem.details}</Text>
         </View>
       )}
   </View>

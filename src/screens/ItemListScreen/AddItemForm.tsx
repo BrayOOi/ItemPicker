@@ -8,7 +8,8 @@ import { addItem } from '../../store/items/actions';
 
 import { ItemType } from '../../store/items/types';
 
-import styles from './styles';
+import stylesFn from './styles';
+import useTheme from '../../hooks/useTheme';
 
 const initialState = {
   state: {
@@ -52,41 +53,53 @@ const formReducer = (
 const AddItemForm: React.FC<{}> = () => {
   const [form, localDispatch] = useReducer(formReducer, initialState);
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const onSubmit = () => {
     localDispatch({ type: 'reset' });
     dispatch(addItem(form.payload));
   };
 
+  const styles = stylesFn(theme, true);
+
   if (form.state.isOpen) {
     return (
       <View style={[
-        styles.listItemContainer,
         styles.formContainer,
+        styles.listItemContainer,
+        styles.lastItemContainer,
         ]}>
         <View style={styles.listTitleContainer}>
           <TextInput
+            style={styles.formTitle}
             value={form.payload.title}
             onChangeText={text => localDispatch({ type: 'input/input_title', payload: text })}
             placeholder="New Item"
           />
-          <View style={{flexDirection:'row', gap: 5}}>
+          <View style={styles.listTitleIconContainer}>
             <TouchableOpacity
               style={styles.minusIconContainer}
               onPress={onSubmit}>
-              <Icon name="check" size={30} color="#fff" />
+              <Icon
+                name="check"
+                size={30}
+                color={theme.dark_shadow}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.minusIconContainer}
               onPress={() => localDispatch({ type: 'press/collapse_form' })}>
-              <Icon name="minus" size={30} color="#fff" />
+              <Icon name="minus" size={30} color={theme.dark_shadow} />
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.listDetailsContainer}>
           <TextInput
             value={form.payload.details}
-            onChangeText={text => localDispatch({ type: 'input/input_details', payload: text })}
+            onChangeText={text => localDispatch({ 
+              type: 'input/input_details',
+              payload: text,
+            })}
             placeholder="New Item Details"
           />
         </View>
@@ -98,9 +111,12 @@ const AddItemForm: React.FC<{}> = () => {
         style={[
           styles.listItemContainer,
           styles.addIconContainer,
+          styles.lastItemContainer,
         ]}
-        onPress={() => localDispatch({ type: 'press/expand_form' })}>
-        <Icon name="plus" size={30} color="#fff" />
+        onPress={() => {
+          localDispatch({ type: 'press/expand_form' });
+        }}>
+        <Icon name="plus" size={30} color={theme.dark_shadow} />
       </TouchableOpacity>
     );
   }

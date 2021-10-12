@@ -8,16 +8,19 @@ import {
   navigateHomeScreen,
 } from '../../store/system/actions';
 
-import styles from './styles';
+import stylesFn from './styles';
 
 import { RootState } from '../../store';
+import useTheme from '../../hooks/useTheme';
 
 const Footer: React.FC<{}> = () => {
-  const { page } = useSelector((state: RootState) => state.system);
   const windowWidth = Dimensions.get('window').width;
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const { page } = useSelector((state: RootState) => state.system);
 
   const isHome = page === 'home';
+  const styles = stylesFn(theme, isHome);
 
   if (isHome) {
     return (
@@ -26,12 +29,12 @@ const Footer: React.FC<{}> = () => {
         activeOpacity={1}>
         <Svg height="130" width={windowWidth} viewBox={`0 240 350 120`}>
           <Path
-            fill="#333"
-            transform={`scale(${windowWidth/350})`}
+            fill={theme.light}
+            transform={`scale(${windowWidth/350}, 1.5)`}
             d="M 0 370 L 0 370 Q 110 260 270 250 Q 320 250 350 260 L 350 370 Z"
           />
-          <View style={[styles.footer, { justifyContent: 'flex-end' }]}>
-            <Text style={styles.footerText}>Next</Text>
+          <View style={styles.footer}>
+              <Text style={styles.footerText}>Next</Text>
           </View>
         </Svg>
       </TouchableOpacity>
@@ -43,11 +46,11 @@ const Footer: React.FC<{}> = () => {
         activeOpacity={1}>
         <Svg height="130" width={windowWidth} viewBox={`-350 240 350 120`}>
           <Path
-            fill="#333"
-            transform={`scale(${windowWidth/350}) scale(-1, 1)`}
+            fill={theme.light}
+            transform={`scale(${windowWidth/350}, 1.5) scale(-1, 1)`}
             d="M 0 370 L 0 370 Q 110 260 270 250 Q 320 250 350 260 L 350 370 Z"
           />
-          <View style={[styles.footer, { justifyContent: 'flex-start' }]}>
+          <View style={styles.footer}>
             <Text style={styles.footerText}>Back</Text>
           </View>
         </Svg>
