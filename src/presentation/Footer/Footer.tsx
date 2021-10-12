@@ -18,6 +18,8 @@ const Footer: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const { page } = useSelector((state: RootState) => state.system);
+  const items = useSelector((state: RootState) => state.items);
+  const selectedItems = items.some(item => item.isSelected);
 
   const isHome = page === 'home';
   const styles = stylesFn(theme, isHome);
@@ -25,16 +27,18 @@ const Footer: React.FC<{}> = () => {
   if (isHome) {
     return (
       <TouchableOpacity
-        onPress={() => dispatch(navigateNextScreen)}
+        onPress={() => items.length && dispatch(navigateNextScreen)}
         activeOpacity={1}>
-        <Svg height="130" width={windowWidth} viewBox={`0 240 350 120`}>
+        <Svg height="170" width={windowWidth} viewBox={`0 360 350 170`}>
           <Path
             fill={theme.light}
             transform={`scale(${windowWidth/350}, 1.5)`}
             d="M 0 370 L 0 370 Q 110 260 270 250 Q 320 250 350 260 L 350 370 Z"
           />
           <View style={styles.footer}>
+            {selectedItems && (
               <Text style={styles.footerText}>Next</Text>
+            )}
           </View>
         </Svg>
       </TouchableOpacity>
@@ -44,7 +48,7 @@ const Footer: React.FC<{}> = () => {
       <TouchableOpacity
         onPress={() => dispatch(navigateHomeScreen)}
         activeOpacity={1}>
-        <Svg height="130" width={windowWidth} viewBox={`-350 240 350 120`}>
+        <Svg height="170" width={windowWidth} viewBox={`-300 360 350 170`}>
           <Path
             fill={theme.light}
             transform={`scale(${windowWidth/350}, 1.5) scale(-1, 1)`}
