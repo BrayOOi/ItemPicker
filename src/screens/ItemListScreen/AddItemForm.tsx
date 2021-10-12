@@ -11,9 +11,14 @@ import { ItemType } from '../../store/items/types';
 import stylesFn from './styles';
 import useTheme from '../../hooks/useTheme';
 
+interface AddItemFormProps {
+  onAdd: () => void;
+}
+
 const initialState = {
   state: {
     isOpen: false,
+    canSubmit: false,
   },
   payload: {
     title: '',
@@ -38,6 +43,8 @@ const formReducer = (
     case 'input/input_title':
       return produce(state, draft => {
         draft.payload.title = action.payload;
+
+        draft.state.canSubmit = !!action.payload.length;
       });
     case 'input/input_details':
       return produce(state, draft => {
@@ -50,14 +57,18 @@ const formReducer = (
   }
 };
 
-const AddItemForm: React.FC<{}> = () => {
+const AddItemForm: React.FC<AddItemFormProps> = ({
+  onAdd,
+}) => {
   const [form, localDispatch] = useReducer(formReducer, initialState);
   const dispatch = useDispatch();
   const theme = useTheme();
 
   const onSubmit = () => {
-    localDispatch({ type: 'reset' });
-    dispatch(addItem(form.payload));
+    if (form.state.canSubmit) {
+      localDispatch({ type: 'reset' });
+      dispatch(addItem(form.payload));
+    } 
   };
 
   const styles = stylesFn(theme, true);
@@ -84,6 +95,7 @@ const AddItemForm: React.FC<{}> = () => {
                 name="check"
                 size={30}
                 color={theme.dark_shadow}
+                style={{ opacity: form.state.canSubmit ? 1 : 0.6 }}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -114,6 +126,7 @@ const AddItemForm: React.FC<{}> = () => {
           styles.lastItemContainer,
         ]}
         onPress={() => {
+          onAdd();
           localDispatch({ type: 'press/expand_form' });
         }}>
         <Icon name="plus" size={30} color={theme.dark_shadow} />

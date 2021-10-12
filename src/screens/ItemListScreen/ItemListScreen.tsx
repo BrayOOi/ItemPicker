@@ -116,7 +116,7 @@ const ItemListScreen: React.FC<{}> = () => {
                 </TouchableOpacity>
               </Swipeable>
             ))}
-          {isHome && <AddItemForm />}
+          {isHome && <AddItemForm onAdd={scrolltoBottom} />}
         </ScrollView>
 
         <SelectedItem isShow={!isHome} />
